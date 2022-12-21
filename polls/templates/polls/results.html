@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center flex-column">
+<h1>{{ question.question_text }}</h1>
+<ul>
+    {% for choice in question.choice_set.all %}
+    <li><h6>{{ choice.choice_text }} -- {{ choice.votes }} vote{{choice.votes|pluralize}} ({{choice.percentage}}%)</h6></li>
+    {% endfor %}
+</ul>
+<a class="btn btn-success" href="{% url 'polls:index' %}" role="button">Вернуться на главную</a>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+{% if question %}
+<div class="d-flex justify-content-center align-items-center">
+    {% if user.is_authenticated %}
+    <form action="{% url 'polls:vote' question.id %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>
+                <h1>{{question.question_text}}</h1>
+            </legend>
+            {% if not user.profile.voted %}
+            <p>Полное описание: {{ question.description2 }}</p>
+            {% if error_message %}<p><strong> {{error_message}}</strong></p>{% endif %}
+            {% for choice in question.choice_set.all %}
+            <input type="radio" name="choice" id="choice{{forloop.counter}}" value="{{choice.id}}">
+            <label for="choice{{forloop.counter}}">{{choice.choice_text}}</label><br>
+            {% endfor %}
+            {% endif %}
+        </fieldset>
+    <br>
+    {% if user.profile.voted %}
+        <h3>Вы уже проголосовали!</h3>
+    {% else %}
+        <input type="submit" value="Vote" class="btn btn-success">
+    {% endif %}
+    </form>
+    {% else %}
+        <h1>Вы не авторизованы!</h1>
+    {% endif %}
+</div>
+{% else %}
+<div class="d-flex justify-content-center align-items-center">
+    <h1>Такого вопроса не существует</h1>
+</div>
+{% endif %}
+{% endblock %}
